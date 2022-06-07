@@ -43,14 +43,10 @@ export default class UserService {
    * Update User
    */
   async updateUser(id: number, params: Partial<UserParams>): Promise<User> {
-    await this.repo.update(id, params);
     const user = await this.getUser(id);
+    await this.repo.update(user.id, params);
 
-    if (user == null) {
-      throw new ApiError(HTTPStatus.NotFound);
-    }
-
-    return user;
+    return this.getUser(user.id);
   }
 
   /**
